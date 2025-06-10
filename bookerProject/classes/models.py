@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 
 # Create your models here.
 
@@ -30,9 +31,11 @@ class AvailableSlot(models.Model):
 #The Booking model acts as a through model between User and FitnessClass, while also connecting with AvailableSlot to show which slots were booked    
 class Bookings(models.Model):
     user = models.ForeignKey(User, related_name='bookings', on_delete=models.CASCADE)
+    bookedWithMail = models.EmailField(default='placeholder@example.com')
     fitness_class = models.ForeignKey(FitnessClass, related_name='bookings', on_delete=models.CASCADE)
     slots_booked = models.ManyToManyField(AvailableSlot)
     quantity = models.PositiveIntegerField(default=1)
+    createdAt = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f'{self.user.name} booked {self.quantity} slots in {self.fitness_class.name}'
