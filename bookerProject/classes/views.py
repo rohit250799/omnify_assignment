@@ -39,7 +39,6 @@ class BookFitnessClassView(APIView):
         if slots.count() != len(slot_ids):
             return Response({'error': 'One or more slot_ids are invalid for this class'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Optional: Check capacity constraints
         for slot in slots:
             current_bookings = Bookings.objects.filter(slots_booked=slot).aggregate(total=models.Sum('quantity'))['total'] or 0
             if current_bookings + quantity > slot.capacity:
@@ -61,6 +60,14 @@ class BookFitnessClassView(APIView):
         serializer = BookingSerializer(booking)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+class BookingListByEmailView(APIView):
+    def get(self, request):
+        email = request.query_params.get('email')
+        if not email: return Response({'error': 'Email not provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        bookings = Bookings.objects.filter(bookedWithMail=email)
+        serializer = BookingSerializer(bookings, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 def index(request):
     return HttpResponse("Hello, you reached the classes index")
