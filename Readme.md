@@ -36,3 +36,8 @@ Booking model:
 
 1. The Booking model acts as a through model between User and FitnessClass models, while also connecting with AvailableSlot to show which slots were booked
 2. slots_booked in Booking model allows tracking which specific slots were booked
+
+API Endpoints:
+1. GET request on http://127.0.0.1:8000/class/classes/ -> returns a list of all upcoming fitness classes
+2. POST request on http://127.0.0.1:8000/class/book-class/{user_id}/{fitness_class_id}/ -> books a fitness class with fitness class id for user user_id
+3.  
