@@ -4,5 +4,6 @@ from .models import *
 
 admin.site.register(User)
 admin.site.register(FitnessClass)
-
+admin.site.register(AvailableSlot)
+admin.site.register(Bookings)
 
