@@ -1,8 +1,9 @@
 from django.urls import path
 
-from . import views
+from .views import BookFitnessClassView, index, get_classes
 
 urlpatterns = [
-    path("", views.index, name="index"),
-    path("classes/", views.get_classes, name="get_classes"),
+    path("", index, name="index"),
+    path("classes/", get_classes, name="get_classes"),
+    path("book-class/<int:user_id>/<int:fitness_class_id>/", BookFitnessClassView.as_view(), name="book_fitness-]_class"),
 ]
