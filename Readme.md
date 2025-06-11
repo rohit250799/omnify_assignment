@@ -40,4 +40,4 @@ Booking model:
 API Endpoints:
 1. GET request on http://127.0.0.1:8000/class/classes/ -> returns a list of all upcoming fitness classes
 2. POST request on http://127.0.0.1:8000/class/book-class/{user_id}/{fitness_class_id}/ -> books a fitness class with fitness class id for user user_id
-3.  
+3. GET request on http://127.0.0.1:8000/class/bookings/?email={mail_id} -> returns a list of all fitness classes booked with the mail id
