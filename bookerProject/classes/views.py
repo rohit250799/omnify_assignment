@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import FitnessClass, Bookings, User as appUser, AvailableSlot
-from .serializers import BookingSerializer
+from .serializers import BookingSerializer, FitnessClassSerializer
 
 import json
 
@@ -68,6 +68,13 @@ class BookingListByEmailView(APIView):
         bookings = Bookings.objects.filter(bookedWithMail=email)
         serializer = BookingSerializer(bookings, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class FitnessClassListView(APIView):
+    def get(self, request):
+        now = timezone.now()
+        classes = FitnessClass.objects.filter(date_time__gte=now).order_by('date_time')
+        serializer = FitnessClassSerializer(classes, many=True)
+        return Response(serializer.data)
 
 def index(request):
     return HttpResponse("Hello, you reached the classes index")

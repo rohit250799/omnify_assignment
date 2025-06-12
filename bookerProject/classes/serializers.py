@@ -8,9 +8,21 @@ class BookingSerializer(serializers.ModelSerializer):
         read_only_fields = ['bookedWithMail', 'createdAt']
 
 class FitnessClassSerializer(serializers.ModelSerializer):
+    available_slots = serializers.SerializerMethodField()
     class Meta:
         model = FitnessClass
-        fields = ['id', 'name', 'date_time', 'instructor']
+        fields = ['id', 'name', 'date_time', 'instructor', 'available_slots']
+
+    def get_available_slots(self, obj):
+        slots = AvailableSlot.objects.filter(fitness_class=obj)
+        return [
+            {
+                "id": slot.id,
+                "slot_time": slot.slot_time,
+                "capacity": slot.capacity    
+            }
+            for slot in slots
+        ]
 
 class AvailableSlotSerializer(serializers.ModelSerializer):
     class Meta:
