@@ -59,6 +59,12 @@ def test_successful_booking():
 def test_booking_slot_over_capacity():
     client = APIClient()
 
+    user = User.objects.create(
+        name="Test User",
+        email="test@example.com",
+        password="securepassword"
+    )
+
     fitness_class = FitnessClass.objects.create(
         name="HIIT",
         date_time=timezone.now() + timezone.timedelta(days=2),
@@ -72,13 +78,10 @@ def test_booking_slot_over_capacity():
     )
 
     payload = {
-        "class_id": fitness_class.id,
-        "client_name": "Alex",
-        "client_email": "alex@example.com",
         "slot_ids": [slot.id],
-        "quantity": 2  # exceeds capacity
+        "quantity": 2 
     }
 
-    response = client.post('/book/', payload, format='json')
+    response = client.post(f'http://127.0.0.1:8000/book-class/{user.id}/{fitness_class.id}/', payload, format='json')
     assert response.status_code == 400
     assert "overbooked" in response.json()['error'].lower()
